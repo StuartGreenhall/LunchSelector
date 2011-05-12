@@ -44,13 +44,17 @@ class Neo
   
   def get_mandatory_questions()
     questionRoot = neo.get_index('fredsIndex', 'name', 'Questions')
-    mandatoryQuestions = neo.traverse(questionRoot, "nodes", {"relationships" => [{"type"=> "question" , "direction" => "all"}], "return filter"=> {"language" => "javascript", "body" => "position.length() > 0 && position.lastRelationship().hasProperty('mandatory')"}, "depth" => 1})
+    mandatoryQuestions = neo.traverse(questionRoot, "nodes", {"relationships" => [{"type"=> "question" , "direction" => "all"}], "return filter"=> {"language" => "javascript", 
+      "body" => "position.length() > 0 && position.lastRelationship().hasProperty('mandatory')"}, "depth" => 1})
     return mandatoryQuestions
   end
   
   def get_first_questions()
     questionRoot = neo.get_index('fredsIndex', 'name', 'Questions')
-    firstQuestions = neo.traverse(questionRoot, "nodes", {"relationships" => [{"type"=> "question" , "direction" => "all"}], "return filter"=> {"language" => "javascript", "body" => "position.length() > 0 && position.lastRelationship().hasProperty('sequence') && position.lastRelationship().getProperty('sequence') == 1"}, "depth" => 1})
+    firstQuestions = neo.traverse(questionRoot, "nodes", {"relationships" => [{"type"=> "question" , "direction" => "all"}], "return filter"=> {"language" => "javascript", 
+      "body" => "position.length() > 0 && 
+          position.lastRelationship().hasProperty('sequence') && 
+          position.lastRelationship().getProperty('sequence') == 1"}, "depth" => 1})
     return firstQuestions
   end
   
@@ -64,20 +68,78 @@ class Neo
   
   def get_excluded_dishes()
     menu = neo.get_index('fredsIndex', 'name', 'Menu')
-    dishes = neo.traverse(menu, "nodes", {"relationships" => [{"type" => "dish" , "direction" => "all"}], "return filter"=> {"language"=> "javascript", "body"=> "(function shouldReturn(pos) {var node = pos.endNode();var rels = node.getRelationships();var relIterator = rels.iterator();var rel = null;while(relIterator.hasNext()) {rel = relIterator.next();if(rel.getType() == 'excludes'){return true;}}return false;})(position);"}})
-    #"return filter"=> {"language"=> "javascript", "body"=> "(function shouldReturn(pos) {var node = pos.endNode();var rels = node.getRelationships();var relIterator = rels.iterator();var rel = null;while(relIterator.hasNext()) {rel = relIterator.next();if(rel.getType() == 'excludes'){return true;}}return false;})(position);"}})
+    dishes = neo.traverse(menu, "nodes", {"relationships" => [{"type" => "dish" , "direction" => "all"}], "return filter"=> {"language"=> "javascript", 
+      "body"=> "
+        (function shouldReturn(pos) 
+        {
+          var node = pos.endNode();
+          var rels = node.getRelationships();
+          var relIterator = rels.iterator();
+          var rel = null;
+          while(relIterator.hasNext()) 
+          {
+            rel = relIterator.next();
+            if(rel.getType() == 'excludes')
+            {
+              return true;
+            }
+          }
+          return false;
+        })(position);"}})
     return dishes
   end
   
   def get_excluded_dishes_based_on_answer(answer)
     menu = neo.get_index('fredsIndex', 'name', 'Menu')
-    dishes = neo.traverse(menu, "nodes", {"relationships" => [{"type" => "dish" , "direction" => "all"}], "return filter"=> {"language"=> "javascript", "body"=> "(function shouldReturn(pos) {var node = pos.endNode();var rels = node.getRelationships();var relIterator = rels.iterator();var rel = null;while(relIterator.hasNext()) {rel = relIterator.next();if(rel.getType() == 'excludes' &&  rel.getStartNode().getProperty('name') == '#{answer}'){return true;}}return false;})(position);"}})
+    dishes = neo.traverse(menu, "nodes", {"relationships" => [{"type" => "dish" , "direction" => "all"}], "return filter"=> {"language"=> "javascript", 
+      "body"=> "
+        (function shouldReturn(pos) 
+        {
+          var node = pos.endNode();
+          var rels = node.getRelationships();
+          var relIterator = rels.iterator();
+          var rel = null;
+          while(relIterator.hasNext()) 
+          {
+            rel = relIterator.next();
+            if(rel.getType() == 'excludes' &&  rel.getStartNode().getProperty('name') == '#{answer}')
+            {
+              return true;
+            }
+          }
+          return false;
+        })(position);"}})
     return dishes
   end
   
   def get_excluded_dishes_based_on_two_answers(answerA, answerB)
     menu = neo.get_index('fredsIndex', 'name', 'Menu')
-    dishes = neo.traverse(menu, "nodes", {"relationships" => [{"type" => "dish" , "direction" => "all"}], "return filter"=> {"language"=> "javascript", "body"=> "(function shouldReturn(pos) {var node = pos.endNode();var rels = node.getRelationships();var relIterator = rels.iterator();var rel = null; var answerA = false; var answerB = false; while(relIterator.hasNext()) {rel = relIterator.next();  if(rel.getType() == 'excludes' &&  rel.getStartNode().getProperty('name') == '#{answerA}') { answerA = true } if(rel.getType() == 'excludes' && rel.getStartNode().getProperty('name') == '#{answerB}') { answerB = true; } if(answerA && answerB) return true;}return false;})(position);"}})
+    dishes = neo.traverse(menu, "nodes", {"relationships" => [{"type" => "dish" , "direction" => "all"}], "return filter"=> {"language"=> "javascript", 
+      "body"=> "
+        (function shouldReturn(pos) 
+        {
+          var node = pos.endNode();
+          var rels = node.getRelationships();
+          var relIterator = rels.iterator();
+          var rel = null; 
+          var answerA = false; 
+          var answerB = false; 
+          while(relIterator.hasNext()) 
+          {
+            rel = relIterator.next();  
+            if(rel.getType() == 'excludes' &&  rel.getStartNode().getProperty('name') == '#{answerA}') 
+            { 
+              answerA = true 
+            } 
+            if(rel.getType() == 'excludes' && rel.getStartNode().getProperty('name') == '#{answerB}') 
+            {
+              answerB = true; 
+            } 
+            if(answerA && answerB) 
+              return true;
+          }
+          return false;
+        })(position);"}})
     return dishes
   end
 
