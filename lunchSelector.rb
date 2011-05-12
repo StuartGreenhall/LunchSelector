@@ -72,7 +72,7 @@ get '/menu/excludeddishes/:answer' do
   haml :excludedDishesBasedOnAnswer
 end
 
-get '/menu/excludedDishes/separatewithamp/:answer' do
+get '/menu/excludeddishes/separatewithamp/:answer' do
   db = Neo.new
   
   answerA = params[:answer].split("&")[0]
@@ -80,12 +80,7 @@ get '/menu/excludedDishes/separatewithamp/:answer' do
    
   @excludedDishesBasedOnTwoAnswers = db.get_excluded_dishes_based_on_two_answers(answerA, answerB)
   
-  @excludedDishesBasedOnTwoAnswersText = Array.new
-  @excludedDishesBasedOnTwoAnswers.each do | question |
-    nodeId = question.values_at('self')[0].split('/').last
-    text = question.values_at('data')[0].values_at('name')
-    @excludedDishesBasedOnTwoAnswersText << { :nodeId => nodeId, :text => text } 
-  end
+  @excludedDishesBasedOnTwoAnswersText = prepares_data(@excludedDishesBasedOnTwoAnswers)
   haml :excludedDishesBasedOnTwoAnswers
 end
 

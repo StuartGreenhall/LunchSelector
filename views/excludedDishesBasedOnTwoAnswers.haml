@@ -1,5 +1,7 @@
 %body
 	%h1 Excluded Dishes Based on Two Answers
 	%ul		
-	- @excludedDishesBasedOnTwoAnswersText.each do |result|
-		%li #{result}
+	- @excludedDishesBasedOnTwoAnswersText.each do |text|
+		%li 
+			#{text[:text]} 
+
