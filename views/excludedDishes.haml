@@ -1,5 +1,8 @@
 %body
 	%h1 Excluded Dishes
+	%a{:href => url("/")} Home
+	%br
 	%ul		
-	- @excludedDishesText.each do |result|
-		%li #{result}
+	- @excludedDishesText.each do |text|
+		%li 
+			%a{:href => url("/menu/excludeddishes/#{text[:nodeId]}")} #{text[:text]} 
