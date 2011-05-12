@@ -87,17 +87,11 @@ get '/menu/excludeddishes' do
   haml :excludedDishes
 end
 
-get '/menu/excludedDishes/:answer' do
+get '/menu/excludeddishes/:answer' do
   db = Neo.new
-  
   @excludedDishesBasedOnAnswer = db.get_excluded_dishes_based_on_answer(params[:answer])
+  @excludedDishesBasedOnAnswerText = prepares_data(@excludedDishesBasedOnAnswer)
   
-  @excludedDishesBasedOnAnswerText = Array.new
-  @excludedDishesBasedOnAnswer.each do | question |
-    nodeId = question.values_at('self')[0].split('/').last
-    text = question.values_at('data')[0].values_at('name')
-    @excludedDishesBasedOnAnswerText << { :nodeId => nodeId, :text => text } 
-  end
   haml :excludedDishesBasedOnAnswer
 end
 
