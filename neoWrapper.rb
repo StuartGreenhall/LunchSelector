@@ -15,6 +15,18 @@ class Neo
     add_customer_to_customers(customers, customer)
   end
   
+  def add_answer_to_customer(customer_name, answered_node_id)
+    customer = neo.get_index('customersIndex', 'name', customer_name)
+    answer = neo.get_node(answered_node_id)
+    neo.create_relationship('answered', customer, answer)
+  end
+  
+  def add_customer_completed_question(customer_name, completed_question_id)
+    completed_question = neo.get_node(completed_question_id)
+    customer = neo.get_index('customersIndex', 'name', customer_name)
+    neo.create_relationship('completed', customer, completed_question)
+  end
+    
   def add_customer_to_customers(customers, customer)
     relationship = neo.create_relationship('customer', customers, customer)
   end

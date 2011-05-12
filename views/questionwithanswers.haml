@@ -5,7 +5,9 @@
 	%ul		
 	#{@first_question_text}
 	
-	- @answers_for_first_question.each do |text|
-		%li
-			#{text[:text]} 
+	%form{ :action => "", :method => "post"}
+		- @answers_for_first_question.each do |text|
+			%li
+				%input{ :type => "checkbox", :name => "answer", :value => "#{text[:text]}" } #{text[:text]}
+		%input{:type => :submit, :value => "Save"}
 	
