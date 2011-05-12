@@ -17,8 +17,15 @@ post '/selectionprocess' do
   @name = params[:name]
   
   db = Neo.new
-  db.create_customer("John")
-  "Successful"
+  db.create_customer(@name)
+  
+  redirect "/selectionprocess/#{@name}"
+end
+
+get '/selectionprocess/:customername' do
+  @name = params[:customername]
+  
+  haml :customerpage
 end
 
 get '/questions' do
