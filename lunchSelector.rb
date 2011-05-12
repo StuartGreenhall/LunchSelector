@@ -70,12 +70,11 @@ get '/questions/:question/:allergy' do
 end
 
 get '/menu' do
-  
   db = Neo.new  
   @items = db.find_menu_items
   @results = Array.new
   @items.each do | item |
-    @results << db.get_node_properties(item, "name")
+    @results << db.get_node_properties(item, ["name"])["name"]
   end 
   haml :menu
 end
