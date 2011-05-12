@@ -1,0 +1,6 @@
+%body
+	%h1 First Questions
+	%ul		
+	- @firstQuestionsText.each do |text|
+		%li
+			%a{:href => url("/questions/first/#{text[:nodeId]}")} #{text[:text]} 

@@ -1,0 +1,6 @@
+%body
+	%h1 Mandatory Questions
+	%ul		
+	- @mandatoryQuestionsText.each do |text|
+		%li
+			%a{:href => url("/questions/mandatory/#{text[:nodeId]}")} #{text[:text]} 

@@ -1,0 +1,10 @@
+%body
+	%h1 Questions
+	%ul		
+	- @question.each do |result|
+		%li #{result}
+	%ul		
+	- @answersText.each do |answer|
+		%li #{answer}
+		
+		
