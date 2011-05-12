@@ -184,6 +184,12 @@ class Neo
     return dishes
   end
   
+  def get_personalised_menu
+    menu = neo.get_index('fredsIndex', 'name', 'Menu')
+    nodes = neo.traverse(menu, "nodes", {"relationships" => [{"type"=> "dish", "direction" => "all"}]})      
+    return nodes
+  end
+  
   def get_first_question()
     first_questions = get_first_questions()
     first_question = first_questions[0]

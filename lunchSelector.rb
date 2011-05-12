@@ -49,7 +49,18 @@ post '/selectionprocess/:customername' do
   end
   
   db.add_customer_completed_question(@customer_name,@completed_question_id)
-  "Success"
+  
+  redirect "/selectionprocess/#{@customer_name}/menu"
+end
+
+get '/selectionprocess/:customername/menu' do
+  @customer_name = params[:customername]
+  
+  db = Neo.new
+  @personalised_menu = db.get_personalised_menu
+  @personalised_menu_text = prepares_data(@personalised_menu);
+  
+  haml :customermenu
 end
 
 get '/questionwithanswers' do
