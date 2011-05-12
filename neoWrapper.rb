@@ -8,7 +8,15 @@ class Neo
   end
   
   def create_customer(name)
-
+    customer = neo.create_node('name' => name)
+    neo.add_to_index('customersIndex', 'name', name, customer)
+    
+    customers = neo.get_index('fredsIndex', 'name', 'Customers')
+    add_customer_to_customers(customers, customer)
+  end
+  
+  def add_customer_to_customers(customers, customer)
+    relationship = neo.create_relationship('customer', customers, customer)
   end
   
   def create_node(name)
@@ -68,6 +76,23 @@ class Neo
   
   def get_answers_for_question(question)
     neo.traverse(question, "nodes", {"relationships" => [{"type" => "answers", "direction" => "all"}], "depth" => 1})
+  end
+  
+  def relate_node_to_root(node)
+    root = neo.get_root()
+    neo.create_relationship("contains", root, node)
+  end
+  
+  def add_question_to_questions(questions, question)
+    return relationship = neo.create_relationship('question', questions, question)
+  end
+  
+  def set_relationship_properties(relationship, args)
+    neo.set_relationship_properties(relationship, args)
+  end
+    
+  def answer_excludes_menu_item(answer, menuItem)
+    neo.create_relationship("excludes", answer, menuItem)
   end
   
   def get_excluded_dishes()
@@ -145,23 +170,6 @@ class Neo
           return false;
         })(position);"}})
     return dishes
-  end
-
-  def relate_node_to_root(node)
-    root = neo.get_root()
-    neo.create_relationship("contains", root, node)
-  end
-  
-  def add_question_to_questions(questions, question)
-    return relationship = neo.create_relationship('question', questions, question)
-  end
-  
-  def set_relationship_properties(relationship, args)
-    neo.set_relationship_properties(relationship, args)
-  end
-    
-  def answer_excludes_menu_item(answer, menuItem)
-    neo.create_relationship("excludes", answer, menuItem)
   end
                                                           
 end

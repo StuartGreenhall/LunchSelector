@@ -14,11 +14,11 @@ get '/selectionprocess' do
 end
 
 post '/selectionprocess' do
-  name = params[:name]
+  @name = params[:name]
   
   db = Neo.new
-  db.create_customer(name)
-    
+  db.create_customer("John")
+  "Successful"
 end
 
 get '/questions' do
