@@ -27,13 +27,8 @@ end
 get '/questions/first' do
   db = Neo.new
   @firstQuestions = db.get_first_questions
-
-  @firstQuestionsText = Array.new
-  @firstQuestions.each do | question |
-    nodeId = question.values_at('self')[0].split('/').last
-    text = question.values_at('data')[0].values_at('name')
-    @firstQuestionsText << { :nodeId => nodeId, :text => text } 
-  end
+  @firstQuestionsText = prepares_data(@firstQuestions);
+  
   haml :firstQuestions
 end
 
