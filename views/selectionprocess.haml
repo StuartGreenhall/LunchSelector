@@ -1,0 +1,13 @@
+%body
+	%h1 Selection Process
+	%a{:href => url("/")} Home
+	%br
+	
+	%form{ :action => "/selectionprocess", :method => "post"}
+		%fieldset
+			%ol
+				%li
+					%label{:for => "name"} Name:
+					%input{:type => "text", :name => "name", :class => "text"}
+			%input{:type => "submit", :value => "Send", :class => "button"}
+	

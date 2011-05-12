@@ -7,6 +7,10 @@ class Neo
     @neo ||= Neography::Rest.new({:server => 'localhost'})
   end
   
+  def create_customer(name)
+
+  end
+  
   def create_node(name)
     node = neo.create_node('name' => name)
     neo.add_to_index('fredsIndex', 'name', name, node)
@@ -143,10 +147,9 @@ class Neo
     return dishes
   end
 
-  def relate_menu_question_to_root(menu, questions)
+  def relate_node_to_root(node)
     root = neo.get_root()
-    neo.create_relationship("contains", root, menu)
-    neo.create_relationship("contains", root, questions)
+    neo.create_relationship("contains", root, node)
   end
   
   def add_question_to_questions(questions, question)

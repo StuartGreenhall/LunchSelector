@@ -7,6 +7,20 @@ get '/' do
   haml :index 
 end
 
+#Start the application
+get '/selectionprocess' do
+  
+  haml :selectionprocess
+end
+
+post '/selectionprocess' do
+  name = params[:name]
+  
+  db = Neo.new
+  db.create_customer(name)
+    
+end
+
 get '/questions' do
   db = Neo.new
   @questions = db.get_questions

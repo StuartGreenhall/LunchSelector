@@ -1,5 +1,7 @@
 %body
 	%h1 Questions
+	%a{:href => url("/")} Home
+	%br
 	%ul		
 	- @question.each do |result|
 		%li #{result}
