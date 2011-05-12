@@ -1,0 +1,11 @@
+%body
+	%h1 First Question With Answers
+	%a{:href => url("/")} Home
+	%br
+	%ul		
+	#{@first_question_text}
+	
+	- @answers_for_first_question.each do |text|
+		%li
+			#{text[:text]} 
+	

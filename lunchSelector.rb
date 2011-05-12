@@ -25,13 +25,33 @@ end
 get '/selectionprocess/:customername' do
   @name = params[:customername]
   
+  db = Neo.new
+  @questions = db.get_questions
+  @questionsText = prepares_data(@questions);
+  
   haml :customerpage
 end
+
+get '/questionwithanswers' do
+  db = Neo.new
+  
+  @first_question = db.get_first_question
+  @answers_for_first_question = db.get_answers_for_question(@first_question)
+  
+  @first_question_text = @first_question.values_at('data')[0].values_at('name')
+  @answers_for_first_question = prepares_data(@answers_for_first_question)
+  
+  haml :questionwithanswers
+end
+
+
+
+
 
 get '/questions' do
   db = Neo.new
   @questions = db.get_questions
-  @questionsText = prepares_data(@questions);
+  @questionsText = prepares_data(@questions)
 
   haml :questions
 

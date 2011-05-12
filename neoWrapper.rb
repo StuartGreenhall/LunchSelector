@@ -171,5 +171,11 @@ class Neo
         })(position);"}})
     return dishes
   end
+  
+  def get_first_question()
+    first_questions = get_first_questions()
+    first_question = first_questions[0]
+    return first_question
+  end
                                                           
 end
