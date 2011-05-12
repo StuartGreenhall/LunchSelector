@@ -10,13 +10,8 @@ end
 get '/questions' do
   db = Neo.new
   @questions = db.get_questions
-  
-  @questionsText = Array.new
-  @questions.each do | question |
-    nodeId = question.values_at('self')[0].split('/').last
-    text = question.values_at('data')[0].values_at('name')
-    @questionsText << { :nodeId => nodeId, :text => text } 
-  end
+  @questionsText = prepares_data(@questions);
+
   haml :questions
 
 end
