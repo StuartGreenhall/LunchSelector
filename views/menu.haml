@@ -1,5 +1,7 @@
 %body
 	%h1 Menu
+	%a{:href => url("/")} Home
+	%br
 	%ul		
 	- @results.each do |result|
 		%li #{result}
