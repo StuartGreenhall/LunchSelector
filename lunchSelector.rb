@@ -19,13 +19,8 @@ end
 get '/questions/mandatory' do
   db = Neo.new
   @mandatoryQuestions = db.get_mandatory_questions
-
-  @mandatoryQuestionsText = Array.new
-  @mandatoryQuestions.each do | question |
-    nodeId = question.values_at('self')[0].split('/').last
-    text = question.values_at('data')[0].values_at('name')
-    @mandatoryQuestionsText << { :nodeId => nodeId, :text => text } 
-  end
+  @mandatoryQuestionsText = prepares_data(@mandatoryQuestions);
+  
   haml :mandatoryQuestions
 end
 
