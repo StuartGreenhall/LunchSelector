@@ -46,14 +46,6 @@ get '/questions/:question' do
   haml :question
 end
 
-get '/questions/:question/:allergy' do
-  db = Neo.new
-  dishes = db.get_exclude_dishes(params[:allergy])
-  puts dishes.class
-  puts dishes.size
-  haml :allergy
-end
-
 get '/menu' do
   db = Neo.new  
   @items = db.find_menu_items
