@@ -1,0 +1,6 @@
+%body
+	%h1 Customer Page Hello #{@customer_name}
+	- @personalised_menu_text.each do |text|
+		%li 
+			#{text} 
+	
