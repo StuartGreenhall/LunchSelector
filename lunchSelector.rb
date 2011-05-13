@@ -32,6 +32,25 @@ post '/selectionprocess' do
 end
 
 get '/selectionprocess/:customername/completedquestions' do
+  @name = params[:customername]
+  
+  db = Neo.new
+  
+  @completed_questions = db.get_completed_questions(@name)
+  @completed_questions_text = db.prepares_data(@completed_questions)
+  
+  haml :completedquestions
+end
+
+get '/selectionprocess/:customername/uncompletedquestions' do
+  @name = params[:customername]
+  
+  db = Neo.new
+  
+  @uncompleted_questions = db.get_uncompleted_questions(@name)
+  @uncompleted_questions_text = db.prepares_data(@uncompleted_questions)
+  
+  haml :uncompletedquestions
 end
 
 get '/selectionprocess/:customername' do

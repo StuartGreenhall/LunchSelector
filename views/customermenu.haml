@@ -1,6 +1,8 @@
 %body
 	%h1 Customer Page Hello #{@customer_name}
-	%a{:href => url("/")} Home
+	%a{:href => url("/")} Home 
+	%a{:href => url("/selectionprocess/#{@customer_name}/completedquestions")} Completed Questions
+	%a{:href => url("/selectionprocess/#{@customer_name}/uncompletedquestions")} Uncompleted Questions
 	%br
 	- @personalised_menu_text.each do |text|
 		%li 

@@ -3,6 +3,7 @@ require 'rubygems'
 require 'neography'
  	
 class Neo
+
   def neo
     @neo ||= Neography::Rest.new({:server => 'localhost'})
   end
@@ -80,6 +81,15 @@ class Neo
           position.lastRelationship().hasProperty('sequence') && 
           position.lastRelationship().getProperty('sequence') == 1"}, "depth" => 1})
     return firstQuestions
+  end
+  
+  def get_completed_questions(customer_name)
+    customer = neo.get_index('customersIndex', 'name', customer_name)
+    completed_questions = @neo.traverse(customer, "nodes", {"relationships" => [{"type"=> "completed", "direction" => "all"}], "depth" => 1}) 
+  end
+  
+  def get_uncompleted_questions(customer_name)
+
   end
   
   def get_question(id)
