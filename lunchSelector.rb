@@ -7,6 +7,15 @@ get '/' do
   haml :index 
 end
 
+get '/customers' do
+  
+  db = Neo.new
+  @all_customers = db.get_all_customers
+  @all_customers_text = db.prepares_data(@all_customers)
+  
+  haml :customers
+end
+
 #Start the application
 get '/selectionprocess' do
   
@@ -20,6 +29,9 @@ post '/selectionprocess' do
   db.create_customer(@name)
   
   redirect "/selectionprocess/#{@name}"
+end
+
+get '/selectionprocess/:customername/completedquestions' do
 end
 
 get '/selectionprocess/:customername' do

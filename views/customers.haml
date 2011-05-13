@@ -1,0 +1,8 @@
+%body
+	%h1 Customers
+	%a{:href => url("/")} Home
+	%br
+	%ul		
+	- @all_customers_text.each do |text|
+		%li
+			%a{:href => url("/selectionprocess/#{text[:text]}/menu")} #{text[:text]} 

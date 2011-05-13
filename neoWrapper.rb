@@ -107,6 +107,11 @@ class Neo
     neo.create_relationship("excludes", answer, menuItem)
   end
   
+  def get_all_customers
+    customers = neo.get_index('fredsIndex', 'name', 'Customers')
+    neo.traverse(customers, "nodes", {"relationships" => [{"type" => "customer", "direction" => "all"}], "depth" => 1})
+  end
+  
   def get_excluded_dishes()
     menu = neo.get_index('fredsIndex', 'name', 'Menu')
     dishes = neo.traverse(menu, "nodes", {"relationships" => [{"type" => "dish" , "direction" => "all"}], "return filter"=> {"language"=> "javascript", 
