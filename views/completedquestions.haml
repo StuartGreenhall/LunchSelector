@@ -1,0 +1,9 @@
+%body
+	%h1 Completed Questions
+	%a{:href => url("/")} Home
+	%a{:href => url("/selectionprocess/#{@name}/menu")} Personalised Menu
+	%br
+	%ul		
+	- @completed_questions_text.each do |text|
+		%li
+			%a{:href => url("/questions/first/#{text[:nodeId]}")} #{text[:text]} 
