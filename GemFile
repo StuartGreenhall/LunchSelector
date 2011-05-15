@@ -6,3 +6,4 @@ source 'http://rubygems.org'
  	
  	gem 'jruby-openssl', '~> 0.7'
 	gem 'sinatra', '~> 1.2.6'
+	gem 'cucumber'
