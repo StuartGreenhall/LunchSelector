@@ -2,6 +2,9 @@
 require 'rubygems'
 require 'sinatra'
 require 'neoWrapper.rb'
+require 'customer.rb'
+require 'data_helper.rb'
+require 'neography_helper.rb'
 
 get '/' do
   haml :index 
@@ -9,9 +12,9 @@ end
 
 get '/customers' do
   
-  db = Neo.new
-  @all_customers = db.get_all_customers
-  @all_customers_text = db.prepares_data(@all_customers)
+  customer = Customer.new
+  @all_customers = customer.get_all_customers
+  @all_customers_text = DataHelper::prepares_data(@all_customers)
   
   haml :customers
 end
