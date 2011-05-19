@@ -1,0 +1,14 @@
+%body
+	%h1 Customer Page Hello #{@customer_name}
+	%a{:href => url("/")} Home
+	%br
+	
+	#{@question_text}
+	%br
+	
+	%form{ :action => "/selectionprocess/#{@customer_name}/question/#{@question_id}", :method => "post"}
+		%input{ :type => "hidden", :name => "completed_question_id", :value => "#{@question_id}"}
+		- @answers_for_question.each do |text|
+			%li
+				%input{ :type => "checkbox", :name => "answer[]", :value => "#{text[:nodeId]}" } #{text[:text]}
+		%input{:type => :submit, :value => "Save"}

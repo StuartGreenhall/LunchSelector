@@ -89,7 +89,11 @@ class Neo
   end
   
   def get_uncompleted_questions(customer_name)
+    all_questions = get_questions
 
+    completed_questions = get_completed_questions(customer_name)
+    
+    return all_questions - completed_questions
   end
   
   def get_question(id)
@@ -205,7 +209,7 @@ class Neo
   
   def get_excluded_dishes_for_customer(customer_name)
     customer = neo.get_index('customersIndex', 'name', customer_name)
-    answered_dishes = neo.traverse(customer, "nodes", {"relationships" => [{"type"=> "answered", "direction" => "all"}], "depth" => 1})
+    answered_dishes = neo.traverse(customer, "nodes", {"relationships" => [{"type"=> "answered", "direction" => "out"}], "depth" => 1})
     
     @array_of_answered_dishes = prepares_data(answered_dishes)
     
@@ -213,7 +217,7 @@ class Neo
     
     @array_of_answered_dishes.each do |answered_dish|
       a_dish = neo.get_index('fredsIndex', 'name', answered_dish[:text])
-      excluded_dishes = neo.traverse(a_dish, "nodes", {"relationships" => [{"type"=> "excludes", "direction" => "all"}], "depth" => 1})
+      excluded_dishes = neo.traverse(a_dish, "nodes", {"relationships" => [{"type"=> "excludes", "direction" => "out"}], "depth" => 1})
 
       prepared_excluded_dishes = prepares_data(excluded_dishes)
       prepared_excluded_dishes.each do |text|
@@ -221,8 +225,9 @@ class Neo
       end
     end
     
+    #p @array_of_excluded_dishes
     #Onle unique dishes
-    @array_of_excluded_dishes = @array_of_excluded_dishes.uniq
+    #@array_of_excluded_dishes = @array_of_excluded_dishes.uniq
     
     @all_dishes = prepares_data(get_all_dishes)
     @only_dish_names = Array.new
@@ -246,10 +251,9 @@ class Neo
     @array_of_node = Array.new
     hash_nodes.each do | node |
       nodeId = node.values_at('self')[0].split('/').last
-      text = node.values_at('data')[0].values_at('name')
+      text = node.values_at('data')[0]['name']
       @array_of_node << { :nodeId => nodeId, :text => text } 
     end
-
     return @array_of_node
   end
                                                           

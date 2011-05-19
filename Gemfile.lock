@@ -1,12 +1,3 @@
-GIT
-  remote: git://github.com/undees/neography.git
-  revision: 971d94b166add4c5aab0ae2a55a47ba0cd6a1b8e
-  branch: warbler
-  specs:
-    neography (0.0.7)
-      httparty (~> 0.6.1)
-      json
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -22,11 +13,15 @@ GEM
     diff-lcs (1.1.2)
     gherkin (2.3.7)
       json (>= 1.4.6)
-    httparty (0.6.1)
+    haml (3.1.1)
+    httparty (0.7.7)
       crack (= 0.1.8)
     jruby-openssl (0.7.4)
       bouncy-castle-java
     json (1.5.1)
+    neography (0.0.13)
+      httparty (~> 0.7.3)
+      json
     rack (1.2.2)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
@@ -47,7 +42,8 @@ PLATFORMS
 
 DEPENDENCIES
   cucumber
+  haml
   jruby-openssl (~> 0.7)
-  neography (~> 0.0.7)!
+  neography
   rspec
   sinatra (~> 1.2.6)

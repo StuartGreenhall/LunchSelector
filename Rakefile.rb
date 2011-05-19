@@ -1,6 +1,6 @@
 desc 'Import lunch data into Neo4j'
  	task :populate do
- 	  require 'neoWrapper.rb'
+ 	  require File.join(File.dirname(__FILE__), 'neoWrapper')
  	  
  	  neo = Neo.new 
  	  

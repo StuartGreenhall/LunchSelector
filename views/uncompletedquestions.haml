@@ -6,4 +6,4 @@
 	%ul		
 	- @uncompleted_questions_text.each do |text|
 		%li
-			%a{:href => url("/questions/first/#{text[:nodeId]}")} #{text[:text]} 
+			%a{:href => url("/selectionprocess/#{@name}/question/#{text[:nodeId]}")} #{text[:text]} 

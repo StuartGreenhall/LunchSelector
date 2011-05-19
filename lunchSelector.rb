@@ -1,10 +1,10 @@
 # lunchSelector.rb
 require 'rubygems'
 require 'sinatra'
-require 'neoWrapper.rb'
-require 'customer.rb'
-require 'data_helper.rb'
-require 'neography_helper.rb'
+require File.join(File.dirname(__FILE__), 'neoWrapper')
+require File.join(File.dirname(__FILE__), 'customer')
+require File.join(File.dirname(__FILE__), 'data_helper')
+require File.join(File.dirname(__FILE__), 'neography_helper')
 
 get '/' do
   haml :index 
@@ -87,6 +87,45 @@ post '/selectionprocess/:customername' do
   redirect "/selectionprocess/#{@customer_name}/menu"
 end
 
+get '/selectionprocess/:customername/question/:question_id' do
+  @customer_name = params[:customername]
+  @question_id = params[:question_id]
+  
+  db = Neo.new
+  
+  @question = db.get_question(@question_id)
+  
+  @answers_for_question = db.get_answers_for_question(@question)
+  
+  @question_id  = @question.values_at('self')[0].split('/').last
+  @question_text = @question.values_at('data')[0]['name']
+  
+  @answers_for_question = db.prepares_data(@answers_for_question)
+  
+  haml :customerquestion
+  
+end
+
+post '/selectionprocess/:customername/question/:question_id' do
+  @customer_name = params[:customername]
+  @answers = params[:answer]
+  @completed_question_id = params[:completed_question_id]
+  
+  db = Neo.new
+  
+  @answers.each do |answered_node_id|
+    db.add_answer_to_customer(@customer_name, answered_node_id)
+  end
+  
+  db.add_customer_completed_question(@customer_name,@completed_question_id)
+  
+  redirect "/selectionprocess/#{@customer_name}/menu"
+end
+
+
+
+
+
 get '/selectionprocess/:customername/menu' do
   @customer_name = params[:customername]
   
@@ -117,6 +156,7 @@ get '/questions' do
   db = Neo.new
   @questions = db.get_questions
   @questionsText = db.prepares_data(@questions)
+  puts @questionsText
 
   haml :questions
 
