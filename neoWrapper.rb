@@ -61,7 +61,7 @@ class Neo
     neo.add_to_index('questions', 'name', name, question)
   end
   
-  def get_questions()
+  def get_questions
     questionRoot = neo.get_index('fredsIndex', 'name', 'Questions')
     questions = neo.traverse(questionRoot, "nodes", {"relationships" => [{"type"=> "question", "direction" => "all"}], "depth" => 1})
     return questions
@@ -111,6 +111,10 @@ class Neo
   
   def add_question_to_questions(questions, question)
     return relationship = neo.create_relationship('question', questions, question)
+  end
+  
+  def add_quesiton_to_category(relationshipName, category, question)
+    return relationship = neo.create_relationship(relationshipName, category, question)
   end
   
   def set_relationship_properties(relationship, args)

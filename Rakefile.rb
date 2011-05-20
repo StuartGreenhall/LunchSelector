@@ -8,6 +8,7 @@ desc 'Import lunch data into Neo4j'
  	  questions = neo.create_node('Questions')
  	  customers = neo.create_node('Customers')
  	  
+ 	  
  	  neo.relate_node_to_root(menu) 
  	  neo.relate_node_to_root(questions)
  	  neo.relate_node_to_root(customers)
@@ -25,9 +26,22 @@ desc 'Import lunch data into Neo4j'
     dislikes = neo.create_question('What dont you like?')
     dietery = neo.create_question('What is your specific diet?')
     
-    allergiesRelationship = neo.add_question_to_questions(questions, allergies)
-    dislikesRelationship = neo.add_question_to_questions(questions, dislikes)
-    dieteryRelationship = neo.add_question_to_questions(questions, dietery)
+    neo.add_question_to_questions(questions,allergies)
+    neo.add_question_to_questions(questions,dislikes)
+    neo.add_question_to_questions(questions,dietery)
+    
+    restrictionAlbeToEat = neo.create_question("Are you able to eat anything?")
+    neo.add_question_to_questions(questions, restrictionAlbeToEat)
+    
+    yes = neo.create_node("yes")
+    no = neo.create_node("no")
+    
+    neo.add_answers_to_question(restrictionAlbeToEat, yes)
+    neo.add_answers_to_question(restrictionAlbeToEat, no)
+    
+    allergiesRelationship = neo.add_quesiton_to_category("pre-req",no, allergies)
+    dislikesRelationship = neo.add_quesiton_to_category("pre-req",no, dislikes)
+    dieteryRelationship = neo.add_quesiton_to_category("pre-req",no, dietery)
     
     neo.set_relationship_properties(allergiesRelationship, {"mandatory" => "true"})
     neo.set_relationship_properties(allergiesRelationship, {"sequence" => "1"})

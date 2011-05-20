@@ -106,7 +106,7 @@ get '/selectionprocess/:customername/question/:question_id' do
   
 end
 
-post '/selectionprocess/:customername/question/:question_id' do
+post '/selectionprocess/:customername' do
   @customer_name = params[:customername]
   @answers = params[:answer]
   @completed_question_id = params[:completed_question_id]
@@ -121,9 +121,6 @@ post '/selectionprocess/:customername/question/:question_id' do
   
   redirect "/selectionprocess/#{@customer_name}/menu"
 end
-
-
-
 
 
 get '/selectionprocess/:customername/menu' do
